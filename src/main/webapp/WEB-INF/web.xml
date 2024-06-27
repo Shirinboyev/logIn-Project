@@ -4,14 +4,13 @@
         <servlet-name>homeServlet</servlet-name>
         <servlet-class>uz.pdp.lesson.demo2.HomeServlet</servlet-class>
     </servlet>
-    
+
     <servlet-mapping>
         <servlet-name>homeServlet</servlet-name>
         <url-pattern>/homePage</url-pattern>
     </servlet-mapping>
-    
+
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
-
 </web-app>
