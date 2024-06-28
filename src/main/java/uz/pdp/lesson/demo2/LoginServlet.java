@@ -24,7 +24,7 @@ public class LoginServlet extends HttpServlet {
             PrintWriter writer = response.getWriter();
             writer.println(buildInfo(user));
         } else {
-            response.getWriter().println("Invalid email or password");
+            response.getWriter().println(invalidUser(user));
         }
     }
 
@@ -165,5 +165,98 @@ public class LoginServlet extends HttpServlet {
                 </body>
                 </html>
                 """.formatted(user.getFirstname(), user.getLastname(), user.getFirstname(), user.getLastname(), user.getEmail(), user.getAge());
+    }
+    static String invalidUser(User user) {
+        return """
+                <!DOCTYPE html>
+                                    <html lang="en">
+                                    
+                                    <head>
+                                        <meta charset="UTF-8">
+                                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                                        <title>Error</title>
+                                        <style>
+                                            body {
+                                                font-family: Arial, sans-serif;
+                                                line-height: 1.6;
+                                                margin: 0;
+                                                padding: 0;
+                                                background-color: #791c1c;
+                                                display: flex;
+                                                justify-content: center;
+                                                align-items: center;
+                                                height: 100vh;
+                                            }
+                                    
+                                            .error-message {
+                                                padding: 20px;
+                                                background-color: #fff;
+                                                border-radius: 10px;
+                                                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                                                text-align: center;
+                                                color: #333;
+                                                border: 1px solid #ddd;
+                                            }
+                                    
+                                            h1 {
+                                                margin: 0;
+                                                color: #791c1c;
+                                            }
+                                    
+                                            .return-button {
+                                                display: inline-block;
+                                                margin-top: 20px;
+                                                padding: 10px 20px;
+                                                background-color: darkcyan;
+                                                color: #fff;
+                                                border: none;
+                                                border-radius: 5px;
+                                                text-decoration: none;
+                                                cursor: pointer;
+                                                font-size: 16px;
+                                                transition: background-color 0.3s ease;
+                                            }
+                                    
+                                            .return-button:hover {
+                                                background-color: #006666;
+                                            }
+                                    
+                                            .button-container a {
+                                                text-decoration: none;
+                                            }
+                                    
+                                            .button-container button {
+                                                display: inline-block;
+                                                margin-top: 20px;
+                                                padding: 10px 20px;
+                                                background-color: blue;
+                                                color: #fff;
+                                                border: none;
+                                                border-radius: 5px;
+                                                cursor: pointer;
+                                                font-size: 16px;
+                                                transition: background-color 0.3s ease;
+                                            }
+                                    
+                                            .button-container button:hover {
+                                                background-color: darkblue;
+                                            }
+                                        </style>
+                                    </head>
+                                    
+                                    <body>
+                                        <div class="error-message">
+                                            <h1>Email or password incorrect</h1>
+                                            <div class="button-container">
+                                                <a href="/">
+                                                    <button type="button">Main Menu</button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </body>
+                                    
+                                    </html>
+                                    
+                """;
     }
 }
