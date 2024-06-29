@@ -1,10 +1,11 @@
+
 package uz.pdp.lesson.demo2.todo;
 
 
 import java.util.List;
 
 public class TodoService {
-    private TodoRepository taskRepository = new TodoRepository();
+    private final TodoRepository taskRepository = new TodoRepository();
 
     public void save(Todo task) {
         taskRepository.save(task);
@@ -13,7 +14,7 @@ public class TodoService {
     public List<Todo> getAll() {
         return taskRepository.getAll();
     }
-
+/*
     public Todo getById(int id) {
         return taskRepository.getById(id);
     }
@@ -24,5 +25,5 @@ public class TodoService {
 
     public void delete(int id) {
         taskRepository.delete(id);
-    }
+    }*/
 }

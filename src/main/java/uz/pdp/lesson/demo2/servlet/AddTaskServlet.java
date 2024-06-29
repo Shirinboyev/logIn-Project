@@ -1,5 +1,7 @@
+
 package uz.pdp.lesson.demo2.servlet;
 
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,7 +12,8 @@ import uz.pdp.lesson.demo2.todo.TodoService;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @WebServlet(name = "AddTaskServlet", value = "/addTask")
 public class AddTaskServlet extends HttpServlet {
@@ -18,29 +21,23 @@ public class AddTaskServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        /*response.setContentType("text/html");
+
+//response.setContentType("text/html");
         PrintWriter writer = response.getWriter();
-        writer.println(getTaskForm());*/
+        writer.println(getTaskForm());
+
         request.getRequestDispatcher("/addTask.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String title = request.getParameter("title");
+        String title = request.getParameter("task");
         String description = request.getParameter("description");
-        String dueDate = request.getParameter("due_date");
+        LocalDateTime dueDate = LocalDateTime.parse(request.getParameter("due_date"));
 
-        Todo task = new Todo();
-        task.setTitle(title);
-        task.setDescription(description);
-
-        task.setDate(java.sql.Timestamp.valueOf(dueDate));
-
-        taskService.save(task);
-        response.sendRedirect("success.jsp");
-        response.setContentType("text/html");
-        PrintWriter writer = response.getWriter();
-        writer.println(taskAddedConfirmation());
+        taskService.save(new Todo(LoginServlet.USER.getId(),title,description,dueDate));
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/succes.jsp");
+        requestDispatcher.forward(request, response);
     }
 
     private String getTaskForm() {

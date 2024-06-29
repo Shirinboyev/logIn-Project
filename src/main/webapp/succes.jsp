@@ -44,6 +44,6 @@
     </style>
 </head>
 <body>
-<h2>Todo successfully created✅</h2>
+<h2>Todo successfully created 🎉</h2>
 </body>
 </html>

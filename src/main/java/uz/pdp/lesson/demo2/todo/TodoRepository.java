@@ -1,3 +1,4 @@
+
 package uz.pdp.lesson.demo2.todo;
 
 import java.sql.*;
@@ -5,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TodoRepository {
-    private static final String URL = "jdbc:postgresql://localhost:5432/todoapp";
+    private static final String URL = "jdbc:postgresql://localhost:5432/userdb";
     private static final String USER = "postgres";
     private static final String PASSWORD = "1111";
 
@@ -18,43 +19,44 @@ public class TodoRepository {
         }
     }
 
-    public void save(Todo task) {
-        String query = "INSERT INTO tasks (owner_id, title, description, is_done, date) VALUES (?, ?, ?, ?, ?)";
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, task.getOwnerId());
-            statement.setString(2, task.getTitle());
-            statement.setString(3, task.getDescription());
-            statement.setBoolean(4, task.isDone());
-            statement.setTimestamp(5, task.getDate());
-            statement.executeUpdate();
+    public void save(Todo todo) {
+        Connection connection = getConnection();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO todo_users(owner_id,task,description,due_date) VALUES(?,?,?,?)");
+            preparedStatement.setInt(1, todo.owner_id);
+            preparedStatement.setString(2, todo.task);
+            preparedStatement.setString(3, todo.description);
+            preparedStatement.setTimestamp(4, Timestamp.valueOf(todo.due_date));
+            preparedStatement.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
+
     }
 
     public List<Todo> getAll() {
-        List<Todo> tasks = new ArrayList<>();
-        String query = "SELECT * FROM tasks";
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(query);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
-            while (resultSet.next()) {
-                Todo task = new Todo();
-                task.setId(resultSet.getInt("id"));
-                task.setOwnerId(resultSet.getInt("owner_id"));
-                task.setTitle(resultSet.getString("title"));
-                task.setDescription(resultSet.getString("description"));
-                task.setDone(resultSet.getBoolean("is_done"));
-                task.setDate(resultSet.getTimestamp("date"));
-                tasks.add(task);
+        Connection connection = getConnection();
+        List<Todo> todos = new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM todo_users");
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                Todo todo = new Todo();
+                todo.id = rs.getInt("id");
+                todo.owner_id = rs.getInt("owner_id");
+                todo.task = rs.getString("task");
+                todo.description = rs.getString("description");
+                todo.created_at = rs.getTimestamp("created_at").toLocalDateTime();
+                todo.due_date = rs.getTimestamp("due_date").toLocalDateTime();
+                todo.completed = rs.getBoolean("completed");
+                todos.add(todo);
             }
+            return todos;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return tasks;
     }
-
+/*
     public Todo getById(int id) {
         Todo task = null;
         String query = "SELECT * FROM tasks WHERE id = ?";
@@ -76,9 +78,9 @@ public class TodoRepository {
             e.printStackTrace();
         }
         return task;
-    }
+    }*/
 
-    public void update(Todo task) {
+/*    public void update(Todo task) {
         String query = "UPDATE tasks SET owner_id = ?, title = ?, description = ?, is_done = ?, date = ? WHERE id = ?";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -103,5 +105,15 @@ public class TodoRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+
+    }*/
+    public Connection getConnection() {
+        try {
+            return DriverManager.getConnection(URL,USER,PASSWORD);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
+

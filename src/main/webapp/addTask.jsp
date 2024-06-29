@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,8 +13,8 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f4f4f4; /* Initial background color */
-            animation: backgroundAnimation 10s ease infinite alternate; /* Background color animation */
+            background-color: #f4f4f4;
+            animation: backgroundAnimation 10s ease infinite alternate;
             background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.8), rgba(0, 0, 0, 0.8));
             background-size: 400% 400%;
             animation: gradientAnimation 15s ease infinite;
@@ -40,7 +40,7 @@
             max-width: 600px;
             margin: 20px;
             text-align: center;
-            animation: fadeInUp 0.5s ease, pulse 2s ease infinite; /* Fade-in animation and pulse effect */
+            animation: fadeInUp 0.5s ease, pulse 2s ease infinite;
         }
 
         @keyframes fadeInUp {
@@ -106,7 +106,7 @@
 
         button:hover {
             background-color: #0056b3;
-            transform: scale(1.05); /* Scale up slightly on hover */
+            transform: scale(1.05);
         }
 
         #message {
@@ -119,10 +119,10 @@
 <body>
 <div class="container">
     <h1>Create Task</h1>
-    <form id="taskForm" action="/succes.jsp" method="post">
+    <form id="taskForm" action="addTask" method="post">
         <div class="form-group">
             <label for="title">Title:</label>
-            <input type="text" id="title" name="title" required>
+            <input type="text" id="title" name="task" required>
         </div>
         <div class="form-group">
             <label for="description">Description:</label>

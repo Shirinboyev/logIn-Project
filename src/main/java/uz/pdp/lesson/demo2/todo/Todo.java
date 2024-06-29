@@ -6,16 +6,24 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class Todo {
-    private int id;
-    private int ownerId;
-    private String title;
-    private String description;
-    private boolean isDone;
-    private Timestamp date;
+    public int id;
+    public int owner_id;
+    public String task;
+    public String description;
+    public LocalDateTime created_at;
+    public LocalDateTime due_date;
+    public boolean completed;
 
+    public Todo(int owner_id, String task, String description, LocalDateTime due_date) {
+        this.owner_id = owner_id;
+        this.task = task;
+        this.description = description;
+        this.due_date = due_date;
+        this.completed = false;
+        this.created_at = LocalDateTime.now();
+    }
 }
