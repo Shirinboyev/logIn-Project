@@ -1,4 +1,4 @@
-package uz.pdp.lesson.demo2;
+package uz.pdp.lesson.demo2.registration;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class UserRepository {
     }
 
     public void save(User user) {
-        String query = "INSERT INTO users (firstname, lastname, email, password, age) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSER0T INTO users (firstname, lastname, email, password, age) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, user.getFirstname());

@@ -1,4 +1,4 @@
-package uz.pdp.lesson.demo2;
+package uz.pdp.lesson.demo2.servlet;
 
 import java.io.*;
 
@@ -6,6 +6,7 @@ import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import uz.pdp.lesson.demo2.registration.UserService;
 
 @WebServlet(name = "helloServlet", value = "/hello-servlet")
 public class HomeServlet extends HttpServlet {

@@ -1,4 +1,4 @@
-package uz.pdp.lesson.demo2;
+package uz.pdp.lesson.demo2.registration;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
