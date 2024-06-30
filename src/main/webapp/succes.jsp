@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -42,6 +41,12 @@
             to { transform: translateY(-20px); }
         }
     </style>
+    <script>
+        // Redirect to another page after 3 seconds
+        setTimeout(function() {
+            window.location.href = '/login'; // Replace '/login' with the URL of the page you want to redirect to
+        }, 3000); // Adjust delay time as needed (in milliseconds)
+    </script>
 </head>
 <body>
 <h2>Todo successfully created 🎉</h2>

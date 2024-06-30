@@ -121,9 +121,7 @@
 <div class="container">
     <div class="header">
         <h1>My Todo List</h1>
-        <div class="button-container">
-            <a href="showTask" class="animated-button">Show Tasks</a>
-        </div>
+        <br>
     </div>
     <%
         TodoService toDoService = new TodoService();
