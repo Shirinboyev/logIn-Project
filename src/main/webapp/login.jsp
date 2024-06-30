@@ -13,7 +13,7 @@
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #71b7e6, #9b59b6);
+            background: linear-gradient(135deg, #c3e671, #9b59b6, #b012a3, #cb6601);
             background-size: 400% 400%;
             animation: gradientAnimation 15s ease infinite;
         }

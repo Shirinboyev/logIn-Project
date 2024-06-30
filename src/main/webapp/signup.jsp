@@ -21,7 +21,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Helvetica Neue', sans-serif;
-            background: linear-gradient(135deg, #71b7e6, #9b59b6);
+            background: linear-gradient(135deg, #71b7e6, #9b59b6, #b012a3, #cb6601);
             background-size: 400% 400%;
             animation: gradientAnimation 15s ease infinite;
         }
