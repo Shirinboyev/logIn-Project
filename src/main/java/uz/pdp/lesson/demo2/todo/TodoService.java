@@ -14,16 +14,7 @@ public class TodoService {
     public List<Todo> getAll() {
         return taskRepository.getAll();
     }
-/*
-    public Todo getById(int id) {
-        return taskRepository.getById(id);
-    }
 
-    public void update(Todo task) {
-        taskRepository.update(task);
-    }
 
-    public void delete(int id) {
-        taskRepository.delete(id);
-    }*/
+
 }

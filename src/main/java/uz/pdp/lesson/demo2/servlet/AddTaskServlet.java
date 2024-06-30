@@ -12,7 +12,6 @@ import uz.pdp.lesson.demo2.todo.TodoService;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @WebServlet(name = "AddTaskServlet", value = "/addTask")
@@ -21,8 +20,6 @@ public class AddTaskServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-//response.setContentType("text/html");
         PrintWriter writer = response.getWriter();
         writer.println(getTaskForm());
 

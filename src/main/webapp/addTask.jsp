@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,30 +6,14 @@
     <title>Add Task</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Helvetica Neue', sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f4f4f4;
-            animation: backgroundAnimation 10s ease infinite alternate;
-            background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.8), rgba(0, 0, 0, 0.8));
-            background-size: 400% 400%;
-            animation: gradientAnimation 15s ease infinite;
-        }
-
-        @keyframes gradientAnimation {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
+            background-color: #f0f2f5;
         }
 
         .container {
@@ -37,81 +21,82 @@
             padding: 40px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            margin: 20px;
+            max-width: 400px;
+            width: 100%;
             text-align: center;
-            animation: fadeInUp 0.5s ease, pulse 2s ease infinite;
+            animation: fadeIn 0.5s ease-in-out;
         }
 
-        @keyframes fadeInUp {
-            0% {
+        @keyframes fadeIn {
+            from {
                 opacity: 0;
                 transform: translateY(20px);
             }
-            100% {
+            to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
 
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.05);
-            }
-        }
-
         h1 {
             margin-bottom: 20px;
-            font-size: 28px;
+            font-size: 24px;
             color: #333;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-align: left;
         }
 
         label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
+            font-size: 14px;
             color: #555;
         }
 
         input[type="text"], textarea, input[type="datetime-local"] {
-            width: calc(100% - 30px);
+            width: 100%;
             padding: 12px;
-            border: 1px solid #ccc;
+            border: 1px solid #ddd;
             border-radius: 6px;
-            font-size: 16px;
+            font-size: 14px;
+            box-sizing: border-box;
+            background-color: #fafafa;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus, textarea:focus, input[type="datetime-local"]:focus {
+            border-color: #007bff;
+            outline: none;
         }
 
         textarea {
-            height: 120px;
+            height: 100px;
             resize: vertical;
         }
 
         button {
-            padding: 14px 20px;
+            width: 100%;
+            padding: 12px;
             background-color: #007bff;
             color: #fff;
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 18px;
-            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s;
         }
 
         button:hover {
             background-color: #0056b3;
-            transform: scale(1.05);
+            transform: translateY(-1px);
         }
 
         #message {
             margin-top: 20px;
-            font-size: 18px;
+            font-size: 16px;
             color: #28a745;
         }
     </style>
@@ -132,7 +117,7 @@
             <label for="due_date">Due Date:</label>
             <input type="datetime-local" id="due_date" name="due_date" required>
         </div>
-        <button type="submit">CREATE</button>
+        <button type="submit">Create</button>
     </form>
 </div>
 </body>

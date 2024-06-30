@@ -80,34 +80,34 @@ public class TodoRepository {
         return task;
     }*/
 
-/*    public void update(Todo task) {
-        String query = "UPDATE tasks SET owner_id = ?, title = ?, description = ?, is_done = ?, date = ? WHERE id = ?";
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, task.getOwnerId());
-            statement.setString(2, task.getTitle());
-            statement.setString(3, task.getDescription());
-            statement.setBoolean(4, task.isDone());
-            statement.setTimestamp(5, task.getDate());
-            statement.setInt(6, task.getId());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void delete(int id) {
-        String query = "DELETE FROM tasks WHERE id = ?";
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, id);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+    /*    public void update(Todo task) {
+            String query = "UPDATE tasks SET owner_id = ?, title = ?, description = ?, is_done = ?, date = ? WHERE id = ?";
+            try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+                 PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setInt(1, task.getOwnerId());
+                statement.setString(2, task.getTitle());
+                statement.setString(3, task.getDescription());
+                statement.setBoolean(4, task.isDone());
+                statement.setTimestamp(5, task.getDate());
+                statement.setInt(6, task.getId());
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
+        public void delete(int id) {
+            String query = "DELETE FROM tasks WHERE id = ?";
+            try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
+                 PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setInt(1, id);
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 
-    }*/
+
+        }*/
     public Connection getConnection() {
         try {
             return DriverManager.getConnection(URL,USER,PASSWORD);
@@ -116,4 +116,3 @@ public class TodoRepository {
         }
     }
 }
-
