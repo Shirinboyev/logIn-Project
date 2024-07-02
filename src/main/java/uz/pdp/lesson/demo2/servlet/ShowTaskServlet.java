@@ -18,6 +18,9 @@ public class ShowTaskServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<Todo> todos = toDoService.getAll();
+        List<Todo> list = todos.stream().filter(todo -> todo.getOwner_id() == LoginServlet.USER.getId()).toList();
+        req.setAttribute("todoList", list);
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("/showTask.jsp");
         requestDispatcher.forward(req, resp);
     }

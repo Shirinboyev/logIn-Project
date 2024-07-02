@@ -3,6 +3,7 @@ package uz.pdp.lesson.demo2.registration;
 import java.util.List;
 
 public class UserService {
+    private static UserService instance;
     private final UserRepository userRepository = new UserRepository();
 
     public String signUp(String firstname, String lastname, String email, String password, int age) {
@@ -32,5 +33,15 @@ public class UserService {
             }
         }
         return null;
+    }
+    public static UserService getInstance() {
+        if (instance == null) {
+            synchronized (UserService.class) {
+                if (instance == null) {
+                    instance = new UserService();
+                }
+            }
+        }
+        return instance;
     }
 }

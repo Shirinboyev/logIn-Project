@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 @WebServlet(name = "LoginServlet", value = "/login")
 public class LoginServlet extends HttpServlet {
     public static User USER;
-    private final UserService userService = new UserService();
+    private final UserService userService = UserService.getInstance();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");

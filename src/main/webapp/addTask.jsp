@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -104,7 +105,7 @@
 <body>
 <div class="container">
     <h1>Create Task</h1>
-    <form id="taskForm" action="addTask" method="post">
+    <form id="taskForm" action="addTask" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="title">Title:</label>
             <input type="text" id="title" name="task" required>
@@ -117,7 +118,11 @@
             <label for="due_date">Due Date:</label>
             <input type="datetime-local" id="due_date" name="due_date" required>
         </div>
-        <button type="submit">Create</button>
+        <div>
+            <label for="file">Upload File:</label>
+            <input type="file" id="file" name="file" required><br><br>
+        </div>
+        <button type="submit">Add Task</button>
     </form>
 </div>
 </body>

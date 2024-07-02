@@ -12,7 +12,7 @@ import java.io.PrintWriter;
 
 @WebServlet(name = "SignupServlet", value = "/signup")
 public class SignupServlet extends HttpServlet {
-    private UserService userService = new UserService();
+    private UserService userService = UserService.getInstance();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String firstname = request.getParameter("firstname");

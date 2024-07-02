@@ -36,30 +36,6 @@
             color: #bb86fc;
         }
 
-        .button-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .animated-button {
-            font-size: 16px;
-            padding: 10px 20px;
-            border: 2px solid #bb86fc;
-            background-color: #bb86fc;
-            color: white;
-            cursor: pointer;
-            outline: none;
-            transition: background-color 0.4s, color 0.4s;
-            border-radius: 5px;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .animated-button:hover {
-            background-color: #1e1e1e;
-            color: #bb86fc;
-        }
-
         .todo-item {
             background-color: #333;
             border-radius: 10px;
@@ -120,57 +96,56 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>My Todo List</h1>
-        <br>
+        <h1>Todo List</h1>
     </div>
-    <%
-        TodoService toDoService = new TodoService();
-        List<Todo> list = toDoService.getAll();
-        for (Todo todo : list) {
-            if (Objects.equals(todo.owner_id, LoginServlet.USER.getId())) {
-    %>
-    <div class="todo-item <%= todo.completed ? "completed" : "" %>">
-        <div class="todo-header">
-            <h2><%= todo.task %></h2>
-            <i class="fas fa-angle-down todo-icon"></i>
-        </div>
-        <div class="todo-details">
-            <p><strong>Description:</strong> <%= todo.description %></p>
-            <p><strong>Create Date:</strong> <%= todo.created_at %></p>
-            <p><strong>Due Date:</strong> <%= todo.due_date %></p>
-            <div class="checkbox-container">
-                <input type="checkbox" <%= todo.completed ? "checked" : "" %> onclick="toggleCompleted(<%= todo.id %>, this.checked)">
-                <label><%= todo.completed ? "Completed ✔️" : "Mark as completed" %></label>
+    <ul class="todo-list">
+        <%
+            @SuppressWarnings("unchecked")
+            List<Todo> todos = (List<Todo>) request.getAttribute("todoList");
+            if (todos != null) {
+                for (Todo todo : todos) {
+        %>
+        <li class="todo-item">
+            <div class="todo-header">
+                <h2><%= todo.getTask() %></h2>
+                <i class="fas fa-chevron-down todo-icon"></i>
             </div>
-        </div>
-    </div>
-    <%
+            <div class="todo-details">
+                <p><strong>Description:</strong> <%= todo.getDescription() %></p>
+                <p><strong>Due Date:</strong> <%= todo.getDue_date() %></p>
+                <a href="/downloadPage?fileId=<%=todo.getFileId()%>" class="download-link">Download</a>
+                <div class="checkbox-container">
+                    <input type="checkbox" onclick="toggleCompleted(<%= todo.getId() %>, this.checked)" <%= todo.isCompleted() ? "checked" : "" %>>
+                    <label>Completed</label>
+                </div>
+            </div>
+        </li>
+        <%
             }
-        }
-    %>
+        } else {
+        %>
+        <p>No todos available.</p>
+        <%
+            }
+        %>
+    </ul>
 </div>
 
 <script>
     document.querySelectorAll('.todo-header').forEach(header => {
         header.addEventListener('click', () => {
             const details = header.nextElementSibling;
-            details.style.display = (details.style.display === 'none' || details.style.display === '') ? 'block' : 'none';
+            details.style.display = details.style.display === 'block' ? 'none' : 'block';
         });
     });
 
-    function toggleCompleted(todoId, completed) {
-        fetch('toggleCompleted', {
+    function toggleCompleted(todoId, isCompleted) {
+        fetch(`/completeTask?id=${todoId}&completed=${isCompleted}`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ id: todoId, completed: completed })
-        }).then(response => {
-            if (response.ok) {
-                location.reload();
-            } else {
-                alert('Failed to update the task status.');
-            }
+        }).then(() => {
+            location.reload();
+        }).catch(error => {
+            console.error('Error:', error);
         });
     }
 </script>

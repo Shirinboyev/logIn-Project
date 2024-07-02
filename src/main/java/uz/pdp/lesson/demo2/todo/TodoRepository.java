@@ -22,11 +22,12 @@ public class TodoRepository {
     public void save(Todo todo) {
         Connection connection = getConnection();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO todo_users(owner_id,task,description,due_date) VALUES(?,?,?,?)");
-            preparedStatement.setInt(1, todo.owner_id);
-            preparedStatement.setString(2, todo.task);
-            preparedStatement.setString(3, todo.description);
-            preparedStatement.setTimestamp(4, Timestamp.valueOf(todo.due_date));
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO todo_users(owner_id,task,description,due_date,file_id) VALUES(?,?,?,?,?)");
+            preparedStatement.setInt(1, todo.getOwner_id());
+            preparedStatement.setString(2, todo.getTask());
+            preparedStatement.setString(3, todo.getDescription());
+            preparedStatement.setTimestamp(4, Timestamp.valueOf(todo.getDue_date()));
+            preparedStatement.setInt(5,todo.getFileId());
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -42,13 +43,14 @@ public class TodoRepository {
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 Todo todo = new Todo();
-                todo.id = rs.getInt("id");
-                todo.owner_id = rs.getInt("owner_id");
-                todo.task = rs.getString("task");
-                todo.description = rs.getString("description");
-                todo.created_at = rs.getTimestamp("created_at").toLocalDateTime();
-                todo.due_date = rs.getTimestamp("due_date").toLocalDateTime();
-                todo.completed = rs.getBoolean("completed");
+                todo.setId(rs.getInt("id"));
+                todo.setOwner_id(rs.getInt("owner_id"));
+                todo.setTask(rs.getString("task"));
+                todo.setFileId(rs.getInt("file_id"));
+                todo.setDescription(rs.getString("description"));
+                todo.setCreated_at(rs.getTimestamp("created_at").toLocalDateTime());
+                todo.setDue_date(rs.getTimestamp("due_date").toLocalDateTime());
+                todo.setCompleted(rs.getBoolean("completed"));
                 todos.add(todo);
             }
             return todos;
@@ -56,58 +58,7 @@ public class TodoRepository {
             throw new RuntimeException(e);
         }
     }
-/*
-    public Todo getById(int id) {
-        Todo task = null;
-        String query = "SELECT * FROM tasks WHERE id = ?";
-        try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, id);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    task = new Todo();
-                    task.setId(resultSet.getInt("id"));
-                    task.setOwnerId(resultSet.getInt("owner_id"));
-                    task.setTitle(resultSet.getString("title"));
-                    task.setDescription(resultSet.getString("description"));
-                    task.setDone(resultSet.getBoolean("is_done"));
-                    task.setDate(resultSet.getTimestamp("date"));
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return task;
-    }*/
 
-    /*    public void update(Todo task) {
-            String query = "UPDATE tasks SET owner_id = ?, title = ?, description = ?, is_done = ?, date = ? WHERE id = ?";
-            try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                 PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setInt(1, task.getOwnerId());
-                statement.setString(2, task.getTitle());
-                statement.setString(3, task.getDescription());
-                statement.setBoolean(4, task.isDone());
-                statement.setTimestamp(5, task.getDate());
-                statement.setInt(6, task.getId());
-                statement.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        public void delete(int id) {
-            String query = "DELETE FROM tasks WHERE id = ?";
-            try (Connection connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                 PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setInt(1, id);
-                statement.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-
-        }*/
     public Connection getConnection() {
         try {
             return DriverManager.getConnection(URL,USER,PASSWORD);

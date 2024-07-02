@@ -3,20 +3,30 @@ package uz.pdp.lesson.demo2.servlet;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import uz.pdp.lesson.demo2.file.File;
+import uz.pdp.lesson.demo2.file.FileService;
 import uz.pdp.lesson.demo2.todo.Todo;
 import uz.pdp.lesson.demo2.todo.TodoService;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @WebServlet(name = "AddTaskServlet", value = "/addTask")
+@MultipartConfig
 public class AddTaskServlet extends HttpServlet {
-    private TodoService taskService = new TodoService();
+    private static final String UPLOAD_DIR = "files";
+
+    private TodoService todoService = new TodoService();
+    private FileService fileService = new FileService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -28,13 +38,45 @@ public class AddTaskServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String title = request.getParameter("task");
-        String description = request.getParameter("description");
-        LocalDateTime dueDate = LocalDateTime.parse(request.getParameter("due_date"));
+        try {
+            createTodo(request, response);
+        } catch (SQLException | ServletException e) {
+            e.printStackTrace();
+            throw new ServletException("Error creating todo", e);
+        }
+    }
 
-        taskService.save(new Todo(LoginServlet.USER.getId(),title,description,dueDate));
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/succes.jsp");
-        requestDispatcher.forward(request, response);
+    private void createTodo(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        String title = req.getParameter("task");
+        String desc = req.getParameter("description");
+        Part filePart = req.getPart("file");
+        int fileId = saveFile(filePart);
+        int userId = LoginServlet.USER.getId();
+        LocalDateTime dueDate = LocalDateTime.parse(req.getParameter("due_date"));
+        Todo newTodo = new Todo();
+        newTodo.setTask(title);
+        newTodo.setDescription(desc);
+        newTodo.setDue_date(dueDate);
+        newTodo.setFileId(fileId);
+        newTodo.setOwner_id(userId);
+        todoService.save(newTodo);
+        req.getRequestDispatcher("/succes.jsp").forward(req, resp);
+    }
+
+    private int saveFile(Part filePart) throws SQLException, IOException {
+        String originalName = filePart.getSubmittedFileName();
+        String mimeType = filePart.getContentType();
+        byte[] fileData = filePart.getInputStream().readAllBytes();
+        LocalDateTime uploadTime = LocalDateTime.now();
+
+        File file = new File();
+        file.setOriginalName(originalName);
+        file.setMimeType(mimeType);
+        file.setNewName(UUID.randomUUID().toString());
+        file.setFileData(fileData);
+        file.setUploadDate(uploadTime);
+
+        return fileService.save(file);
     }
 
     private String getTaskForm() {
