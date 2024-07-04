@@ -5,17 +5,13 @@ import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
+import jakarta.servlet.http.*;
 import uz.pdp.lesson.demo2.file.File;
 import uz.pdp.lesson.demo2.file.FileService;
 import uz.pdp.lesson.demo2.todo.Todo;
 import uz.pdp.lesson.demo2.todo.TodoService;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -23,26 +19,32 @@ import java.util.UUID;
 @WebServlet(name = "AddTaskServlet", value = "/addTask")
 @MultipartConfig
 public class AddTaskServlet extends HttpServlet {
-    private static final String UPLOAD_DIR = "files";
 
-    private TodoService todoService = new TodoService();
-    private FileService fileService = new FileService();
+    private final TodoService todoService = new TodoService();
+    private final FileService fileService = new FileService();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        PrintWriter writer = response.getWriter();
-        writer.println(getTaskForm());
-
-        request.getRequestDispatcher("/addTask.jsp").forward(request, response);
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("userId") != null) {
+            request.getRequestDispatcher("/addTask.jsp").forward(request, response);
+        } else {
+            response.sendRedirect("/login");
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            createTodo(request, response);
-        } catch (SQLException | ServletException e) {
-            e.printStackTrace();
-            throw new ServletException("Error creating todo", e);
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("userId") != null) {
+            try {
+                createTodo(request, response);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new ServletException("Error creating todo", e);
+            }
+        } else {
+            response.sendRedirect("/addTask");
         }
     }
 
@@ -51,7 +53,7 @@ public class AddTaskServlet extends HttpServlet {
         String desc = req.getParameter("description");
         Part filePart = req.getPart("file");
         int fileId = saveFile(filePart);
-        int userId = LoginServlet.USER.getId();
+        int userId = (int)req.getSession().getAttribute("userId");
         LocalDateTime dueDate = LocalDateTime.parse(req.getParameter("due_date"));
         Todo newTodo = new Todo();
         newTodo.setTask(title);

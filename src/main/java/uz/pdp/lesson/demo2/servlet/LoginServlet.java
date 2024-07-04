@@ -2,9 +2,7 @@ package uz.pdp.lesson.demo2.servlet;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
 import uz.pdp.lesson.demo2.registration.User;
 import uz.pdp.lesson.demo2.registration.UserService;
 
@@ -13,19 +11,28 @@ import java.io.PrintWriter;
 
 @WebServlet(name = "LoginServlet", value = "/login")
 public class LoginServlet extends HttpServlet {
-    public static User USER;
+
     private final UserService userService = UserService.getInstance();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        USER = userService.logIn(email, password);
+        HttpSession session = request.getSession();
 
-        response.setContentType("text/html");
+        User user = userService.logIn(email, password);
+
         PrintWriter writer = response.getWriter();
-        if (USER != null) {
-            writer.println(buildInfo(USER));
+
+        String id = session.getId();
+        Cookie cookie = new Cookie("JSESSIONID", id);
+        cookie.setMaxAge(3600);
+        response.addCookie(cookie);
+
+
+        if (user != null) {
+            session.setAttribute("userId", user.getId());
+            writer.println(buildInfo(user));
         } else {
             writer.println(invalidUser());
         }

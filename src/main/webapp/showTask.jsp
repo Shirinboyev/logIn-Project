@@ -77,9 +77,29 @@
             color: #03dac6;
         }
 
+        .download-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #03dac6;
+            color: #121212;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+
+        .download-link:hover {
+            background-color: #028a76;
+        }
+
         .checkbox-container {
             display: flex;
             align-items: center;
+            margin-top: 10px;
         }
 
         .checkbox-container input[type="checkbox"] {

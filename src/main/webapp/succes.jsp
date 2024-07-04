@@ -43,10 +43,9 @@
         }
     </style>
     <script>
-        // Redirect to another page after 3 seconds
         setTimeout(function() {
-            window.location.href = '/login'; // Replace '/login' with the URL of the page you want to redirect to
-        }, 3000); // Adjust delay time as needed (in milliseconds)
+            window.location.href = '/login';
+            }, 3000);
     </script>
 </head>
 <body>
